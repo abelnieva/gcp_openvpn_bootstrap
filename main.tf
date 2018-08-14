@@ -46,7 +46,7 @@ resource "google_compute_instance" "vpn-engine-instance" {
   }
 
   provisioner "local-exec" {
-    command = "scp -oStrictHostKeyChecking=no ${var.gce_vpn_user}@${google_compute_instance.vpn-engine-instance.network_interface.0.access_config.0.assigned_nat_ip }:/home/${var.gce_vpn_user}/${var.CLIENT}.ovpn ./vpn-config"
+    command = "grep -v ${ google_compute_instance.vpn-engine-instance.network_interface.0.access_config.0.assigned_nat_ip } /home/$USER/.ssh/known_hosts > temp && mv temp /home/$USER/.ssh/known_hosts && mkdir -p vpn-config/ &&scp -oStrictHostKeyChecking=no ${var.gce_vpn_user}@${google_compute_instance.vpn-engine-instance.network_interface.0.access_config.0.assigned_nat_ip }:/home/${var.gce_vpn_user}/${var.CLIENT}.ovpn ./vpn-config && echo ${var.sudo_passwd} | sudo nohup ./scripts/connectVPN.sh ${var.CLIENT} ${var.VPNasDefaultGW}&"
   }
 
   network_interface {

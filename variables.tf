@@ -126,3 +126,14 @@ variable "preemptible" {
 variable "vpn_hostname" {
   default = "vpn.abel.com"
 }
+
+variable "VPNasDefaultGW" {
+  default = 0
+
+  /*
+  0 - NO 
+  1 - YES
+  */
+}
+
+variable "sudo_passwd" {}
